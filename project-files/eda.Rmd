@@ -15,6 +15,9 @@ projRoot <- "C:/_git_/student-performance-analysis/"
 
 library(tidyverse)
 library(ggcorrplot)
+library(randomForest)
+
+source(paste0(projRoot, "functions/diag-accuracy.R"))
 
 ```
 
@@ -48,7 +51,7 @@ full %>%
     ggplot(aes(x=variable, y=value)) + 
     geom_boxplot(aes(fill=school)) +
     theme_bw() +
-    labs(title="Period Grades", x="Period", y="Score")
+    labs(title="Grades by Class Period", x="Period", y="Score")
 
 # Density plots for student grades
 full %>% 
@@ -94,8 +97,14 @@ g3BelowScore <- full %>%
 g3BelowScore
 
 # TODO: in dashboard, provide check boxes to show/hide columns
+# TODO: dig deeper into why students are scoring lower during later periods (hypothesis tests?)
+# TODO: look at top performers for clues about performance factors
 
 ```
+
+A large tail appears near 0 as the day goes on.
+Distributions narrow to the mean as the day goes on.
+GP outperforms MS across the board.
 
 # Performance Correlations
 ```{r}
@@ -117,6 +126,42 @@ ggcorrplot(varCor) +
 
 ```
 
+# Performance Prediction
+```{r}
+
+# Setting the seed for the chunk
+set.seed(123)
+
+# Replacing period grades with average (gMean)
+forestDat <- full
+forestDat$gMean <- rowMeans(forestDat[, 31:33])
+forestDat <- forestDat[, -c(31:33)]
+
+# Labeling students with grades above 10 as a success, removing gMean
+threshold <- 10
+forestDat <- forestDat %>% mutate(label = if_else(gMean < threshold, "Below", "Above")) %>% select(-gMean)
+forestDat$label <- as.factor(forestDat$label)
+
+# Checking for sample bias
+table(forestDat$label)
+
+# Splitting the data into train and test sets (50-50 split)
+trainIndices <- sample(1:nrow(forestDat), 0.50*nrow(forestDat), replace=FALSE)
+
+train <- forestDat[trainIndices, ]
+test <- forestDat[-trainIndices, ]
+
+# Building the model
+rf <- randomForest(label ~ ., data=train, ntree=50)
+rfPred <- predict(rf, test)
+
+# Reporting test accuracy
+testPred <- table(predicted=rfPred, truth=test$label)
+testPred
+
+cat("Test accuracy: ", accuracyDiag(testPred), "%\n", sep="")
+
+```
 
 
 
