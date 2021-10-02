@@ -6,25 +6,109 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
+
 knitr::opts_chunk$set(echo = TRUE)
+
+projRoot <- "C:/_git_/student-performance-analysis/"
+
+library(tidyverse)
+
 ```
 
-## R Markdown
+# Data Preprocessing
+```{r}
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+# Loading and combining raw data
+d1 <- read.table(paste0(projRoot, "data/raw/student-mat.csv"), sep=";", header=TRUE)
+d2 <- read.table(paste0(projRoot, "data/raw/student-por.csv"), sep=";", header=TRUE)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+full <- bind_rows(d1, d2)
 
-```{r cars}
-summary(cars)
+# Checking for duplicate rows
+sum(duplicated(full) == FALSE)
+
+# Checking for missing values by column
+sapply(full, function(x) sum(is.na(x)))
+
+# Exporting merged data to .csv
+write.csv(full, paste0(projRoot, "data/processed/full.csv"), row.names=FALSE)
+
 ```
 
-## Including Plots
+# Grade Distributions
+```{r}
 
-You can also embed plots, for example:
+# Box plots period grades
+full %>% 
+  select(school, G1, G2, G3) %>% 
+  reshape2::melt(id="school") %>% 
+    ggplot(aes(x=variable, y=value)) + 
+    geom_boxplot(aes(fill=school)) +
+    theme_bw() +
+    labs(title="Period Grades", x="Period", y="Score")
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+# Density plots for student grades
+full %>% 
+  select(school, G1) %>% 
+    ggplot(aes(x=G1, fill=school)) +
+    geom_density(alpha=0.25) +
+    theme_bw() +
+    labs(title="1st Period Grades", x="Score", y="Density")
+
+full %>% 
+  select(school, G2) %>% 
+    ggplot(aes(x=G2, fill=school)) +
+    geom_density(alpha=0.25) +
+    theme_bw() +
+    labs(title="2nd Period Grades", x="Score", y="Density")
+
+full %>% 
+  select(school, G3) %>% 
+    ggplot(aes(x=G3, fill=school)) +
+    geom_density(alpha=0.25) +
+    theme_bw() +
+    labs(title="3rd Period Grades", x="Score", y="Density")
+
+# Selecting students that scored below threshold during each period
+threshold <- 2.5
+
+g1BelowScore <- full %>%
+  select(everything()) %>%
+  filter(G1 <= threshold)
+g1BelowScore
+
+g2BelowScore <- full %>%
+  select(everything()) %>%
+  filter(G2 <= threshold)
+g2BelowScore
+
+g3BelowScore <- full %>%
+  select(everything()) %>%
+  filter(G3 <= threshold)
+g3BelowScore
+
+# TODO: in dashboard, provide check boxes to show/hide attributes
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+# Performance Correlations
+```{r}
+
+# Filtering on numeric data
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
