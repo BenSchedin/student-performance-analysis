@@ -2,7 +2,9 @@
 title: "Exploratory Analysis"
 author: "B. D. Schedin"
 date: "10/1/2021"
-output: html_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -75,17 +77,20 @@ threshold <- 2.5
 
 g1BelowScore <- full %>%
   select(everything()) %>%
-  filter(G1 <= threshold)
+  filter(G1 <= threshold) %>%
+  as_tibble()
 g1BelowScore
 
 g2BelowScore <- full %>%
   select(everything()) %>%
-  filter(G2 <= threshold)
+  filter(G2 <= threshold) %>%
+  as_tibble()
 g2BelowScore
 
 g3BelowScore <- full %>%
   select(everything()) %>%
-  filter(G3 <= threshold)
+  filter(G3 <= threshold) %>%
+  as_tibble()
 g3BelowScore
 
 # TODO: in dashboard, provide check boxes to show/hide columns
