@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 projRoot <- "C:/_git_/student-performance-analysis/"
 
 library(tidyverse)
+library(ggcorrplot)
 
 ```
 
@@ -87,7 +88,7 @@ g3BelowScore <- full %>%
   filter(G3 <= threshold)
 g3BelowScore
 
-# TODO: in dashboard, provide check boxes to show/hide attributes
+# TODO: in dashboard, provide check boxes to show/hide columns
 
 ```
 
@@ -95,7 +96,19 @@ g3BelowScore
 ```{r}
 
 # Filtering on numeric data
+fullNum <- full %>%
+  select(where(is.numeric))
 
+# Computing correlations between variables
+varCor <- cor(fullNum)
+
+# Plotting correlation table
+ggcorrplot(varCor) + 
+  theme(axis.text.x = element_text(size=11, angle=90, hjust=0.99, vjust=0.3), axis.text.y=element_text(size=11)) + 
+  labs(title = "Variable Correlations", x="Variable 1", y="Variable 2")
+
+# TODO: are all numeric variables continuous, or are they really factors encoded as numbers?
+# TODO: good way to do correlations between factors/non-numeric?
 
 ```
 
