@@ -1,11 +1,10 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+# Academic Performance Analytics
+# Ben Schedin
+# Shiny Client Functionality
+
+# TODO: make the data downloadable: https://stackoverflow.com/questions/44504759/shiny-r-download-the-result-of-a-table
+# TODO: add school filter for grades
+# TODO: change school fill colors for grade densities
 
 library(shiny)
 library(shinythemes)
@@ -20,7 +19,7 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                              
                              tabPanel(icon("home")),
                              
-                             tabPanel("General",
+                             tabPanel("Grades",
                                       sidebarPanel(sliderInput("perfThresh", 
                                                                "Performance Threshold", 
                                                                min=0, 
