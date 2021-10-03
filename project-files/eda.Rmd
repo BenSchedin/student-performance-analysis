@@ -82,6 +82,7 @@ full %>%
   select(school, gMean) %>% 
     ggplot(aes(x=gMean, fill=school)) +
     geom_density(alpha=0.25) +
+    geom_vline(xintercept=10, color="red") +
     theme_bw() +
     labs(title="Average Grades (All Periods)", x="Score", y="Density")
 
