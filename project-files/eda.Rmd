@@ -117,6 +117,23 @@ A large tail appears near 0 as the day goes on.
 Distributions narrow to the mean as the day goes on.
 GP outperforms MS across the board.
 
+
+# Test
+```{r}
+
+library(rlang)
+
+threshold <- 10
+period <- "G2"
+        
+full %>%
+  select(everything()) %>%
+  filter((!!sym(period)) <= threshold) %>%
+  as_tibble()
+
+```
+
+
 # Grades by Gender
 ```{r}
 
