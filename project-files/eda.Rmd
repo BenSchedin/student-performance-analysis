@@ -82,7 +82,6 @@ full %>%
   select(school, gMean) %>% 
     ggplot(aes(x=gMean, fill=school)) +
     geom_density(alpha=0.25) +
-    geom_vline(xintercept=10, color="red") +
     theme_bw() +
     labs(title="Average Grades (All Periods)", x="Score", y="Density")
 
@@ -170,7 +169,6 @@ set.seed(123)
 
 # Replacing period grades with average (gMean)
 forestDat <- full
-forestDat$gMean <- rowMeans(forestDat[, 31:33])
 forestDat <- forestDat[, -c(31:33)]
 
 # Labeling students with grades above 10 as a success, removing gMean
@@ -199,7 +197,26 @@ cat("Test accuracy: ", accuracyDiag(testPred), "%\n", sep="")
 
 ```
 
+# Categorical Variable Re-encoding
+```{r}
 
+# TODO: Implement
+
+```
+
+# Stepwise Regression
+```{r}
+
+# TODO: Implement
+
+```
+
+# Clustering
+```{r}
+
+# TODO: Implement
+
+```
 
 
 

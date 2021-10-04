@@ -5,6 +5,7 @@
 # TODO: make the data downloadable: https://stackoverflow.com/questions/44504759/shiny-r-download-the-result-of-a-table
 # TODO: add school filter for grades
 # TODO: change school fill colors for grade densities
+# TODO: center/change grade density plot position and/or scale
 
 library(shiny)
 library(shinythemes)
@@ -38,7 +39,7 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                                       fluidRow(column(DT::dataTableOutput("belowThreshTable"), width=12))
                              ),
                              
-                             tabPanel("Tab2")
+                             tabPanel("Demographics")
                              
                   )
 )
