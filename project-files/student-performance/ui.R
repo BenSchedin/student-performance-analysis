@@ -21,7 +21,22 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                              
                              # Main Tab: Home
                              tabPanel(icon("home"),
-                                      fluidRow(column(p("Welcome", style="text-align:center; font-size:75px; font-family: 'Garamond', Times, serif"), width=12))
+                                      # Welcome text
+                                      fluidRow(column(br(), br(), br(), br(), br(), br(), p("Welcome", style="text-align:center; font-size:85px; font-family: 'Garamond'"), width=12)),
+                                      
+                                      # Sign in
+                                      
+                                      fluidRow(
+                                        column(3, offset=5,
+                                               titlePanel("Sign in"),
+                                               wellPanel(
+                                                 textInput("userCred", "Username"),     
+                                                 textInput("pwCred", "Password"),
+                                                 actionButton("loginButton", "Enter")
+                                               )
+                                        )
+                                      )
+                                      
                                       ),
                              
                              # Main Tab: Grades
