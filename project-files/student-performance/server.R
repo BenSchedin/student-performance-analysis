@@ -40,5 +40,57 @@ shinyServer(function(input, output) {
         datatable(table, options=list(scrollX=TRUE, scrollCollapse=TRUE))
         
     })
+    
+    # Habits - Failures
+    output$failures <- renderPlot({
+        
+        temp <- full %>% count(failures, sex)
+        
+        ggplot(temp, aes(fill=sex, x=failures, y=n)) +
+            geom_bar(position="stack", stat="identity") +
+            scale_x_continuous(breaks=round(seq(min(temp$failures), max(temp$failures), by=1))) +
+            theme_bw() +
+            labs(title="Course Failures", x="Number of Failures", y="Count")
+        
+    })
+    
+    # Habits - Absences
+    output$absences <- renderPlot({
+        
+        temp <- full %>% count(absences, sex)
+        
+        ggplot(temp, aes(fill=sex, x=absences, y=n)) +
+            geom_bar(position="stack", stat="identity") +
+            scale_x_continuous(breaks=round(seq(min(temp$absences), max(temp$absences), by=1))) +
+            theme_bw() +
+            labs(title="Absences", x="Number of Absences", y="Count")
+        
+    })
+    
+    # Habits - Study time
+    output$studyTime <- renderPlot({
+        
+        temp <- full %>% count(studytime, sex)
+        
+        ggplot(temp, aes(fill=sex, x=studytime, y=n)) +
+            geom_bar(position="stack", stat="identity") +
+            scale_x_continuous(breaks=round(seq(min(temp$studytime), max(temp$studytime), by=1))) +
+            theme_bw() +
+            labs(title="Study Time", x="Hours Spent", y="Count")
+        
+    })
+    
+    # Habits - Free time
+    output$freeTime <- renderPlot({
+        
+        temp <- full %>% count(freetime, sex)
+        
+        ggplot(temp, aes(fill=sex, x=freetime, y=n)) +
+            geom_bar(position="stack", stat="identity") +
+            scale_x_continuous(breaks=round(seq(min(temp$freetime), max(temp$freetime), by=1))) +
+            theme_bw() +
+            labs(title="Free Time", x="Hours Spent", y="Count")
+        
+    })
 
 })

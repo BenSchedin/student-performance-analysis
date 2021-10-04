@@ -37,12 +37,68 @@ sum(duplicated(full) == FALSE)
 sapply(full, function(x) sum(is.na(x)))
 
 # Replacing period grades with average (gMean)
-full$gMean <- round(rowMeans(full[, 31:33]), 2)
+full$gMean <- rowMeans(full[, 31:33])
 
 # Exporting merged data to .csv
 write.csv(full, paste0(projRoot, "data/processed/full.csv"), row.names=FALSE)
 
 ```
+
+# Demographics
+```{r}
+
+# Stacked bar plot for age and gender
+test <- full %>% count(age, sex)
+
+ggplot(test, aes(fill=sex, y=n, x=age)) +
+  geom_bar(position="stack", stat="identity") +
+  scale_x_continuous(breaks=round(seq(min(test$age), max(test$age), by=1))) +
+  theme_bw() +
+  labs(title="Age", x="Age", y="Count")
+
+```
+
+# Student Culture
+```{r}
+
+# Failures
+temp <- full %>% count(failures, sex)
+
+ggplot(temp, aes(fill=sex, x=failures, y=n)) +
+  geom_bar(position="stack", stat="identity") +
+  scale_x_continuous(breaks=round(seq(min(temp$failures), max(temp$failures), by=1))) +
+  theme_bw() +
+  labs(title="Course Failures", x="Number of Failures", y="Count")
+
+# Absences
+temp <- full %>% count(absences, sex)
+
+ggplot(temp, aes(fill=sex, x=absences, y=n)) +
+  geom_bar(position="stack", stat="identity") +
+  scale_x_continuous(breaks=round(seq(min(temp$absences), max(temp$absences), by=1))) +
+  theme_bw() +
+  labs(title="Absences", x="Number of Absences", y="Count")
+
+# Study time
+temp <- full %>% count(studytime, sex)
+
+ggplot(temp, aes(fill=sex, x=studytime, y=n)) +
+  geom_bar(position="stack", stat="identity") +
+  scale_x_continuous(breaks=round(seq(min(temp$studytime), max(temp$studytime), by=1))) +
+  theme_bw() +
+  labs(title="Study Time", x="Hours Spent", y="Count")
+
+# Free time
+temp <- full %>% count(freetime, sex)
+
+ggplot(temp, aes(fill=sex, x=freetime, y=n)) +
+  geom_bar(position="stack", stat="identity") +
+  scale_x_continuous(breaks=round(seq(min(temp$freetime), max(temp$freetime), by=1))) +
+  theme_bw() +
+  labs(title="Free Time", x="Hours Spent", y="Count")
+
+```
+
 
 # Grade Distributions
 ```{r}

@@ -6,6 +6,7 @@
 # TODO: add school filter for grades
 # TODO: change school fill colors for grade densities
 # TODO: center/change grade density plot position and/or scale
+# TODO: make plot scaling fill page ()
 
 library(shiny)
 library(shinythemes)
@@ -37,9 +38,12 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                                 
                                       
                                       fluidRow(column(DT::dataTableOutput("belowThreshTable"), width=12))
-                             ),
+                                      ),
                              
-                             tabPanel("Demographics")
+                             tabPanel("Habits",
+                                      mainPanel(fluidRow(column(plotOutput("failures"), width=4), column(plotOutput("studyTime"), width=4), column(plotOutput("freeTime"), width=4)),
+                                                fluidRow(column(plotOutput("absences"), width=12)))
+                                      )
                              
                   )
 )
