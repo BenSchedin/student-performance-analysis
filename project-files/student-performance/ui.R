@@ -19,8 +19,12 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                   titlePanel("Academic Performance Analytics"),
                   navbarPage("Navigation",
                              
-                             tabPanel(icon("home")),
+                             # Main Tab: Home
+                             tabPanel(icon("home"),
+                                      fluidRow(column(p("Welcome", style="text-align:center; font-size:75px; font-family: 'Garamond', Times, serif"), width=12))
+                                      ),
                              
+                             # Main Tab: Grades
                              tabPanel("Grades",
                                       sidebarPanel(sliderInput("perfThresh", 
                                                                "Performance Threshold", 
@@ -40,11 +44,18 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                                       fluidRow(column(DT::dataTableOutput("belowThreshTable"), width=12))
                                       ),
                              
-                             tabPanel("Habits",
-                                      mainPanel(fluidRow(column(plotOutput("failures"), width=4), column(plotOutput("studyTime"), width=4), column(plotOutput("freeTime"), width=4)),
-                                                fluidRow(column(plotOutput("absences"), width=12)))
-                                      )
+                             # Main Tab: Habits
+                             tabPanel("Behavior",
+                                      fluidRow(column(plotOutput("failures"), width=4), column(plotOutput("studyTime"), width=4), column(plotOutput("freeTime"), width=4)),
+                                                fluidRow(column(plotOutput("absences"), width=12))
+                                      ),
                              
+                             # Main Tab: Courses
+                             tabPanel("Courses"),
+                             
+                             # Main Tab: Instructors
+                             tabPanel("Instructors")
+                             
+                             )
                   )
-)
-)
+        )
