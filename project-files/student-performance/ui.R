@@ -7,6 +7,7 @@
 # TODO: change school fill colors for grade densities
 # TODO: center/change grade density plot position and/or scale
 # TODO: make plot scaling fill page ()
+# TODO: fix landing page centering issues for login dialogue
 
 library(shiny)
 library(shinythemes)

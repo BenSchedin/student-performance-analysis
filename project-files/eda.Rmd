@@ -253,6 +253,28 @@ cat("Test accuracy: ", accuracyDiag(testPred), "%\n", sep="")
 
 ```
 
+# Test Regression
+```{r}
+
+# Filtering numeric variables
+filtered <- full %>%
+  select("age", "Medu", "Fedu", "traveltime", "studytime", "failures", "famrel", "freetime", "goout", "Dalc", "Walc", "health", "absences", "G1", "G2", "G3", "gMean")
+
+# Defining variables
+explVar <- "age"
+respVar <- "gMean"
+
+# Fitting the model
+lm <- lm(gMean ~ age, data=filtered)
+summary(lm)
+
+# Plotting the model
+ggplot(filtered, aes(x=age, y=gMean)) +
+  geom_point() +
+  stat_smooth(method="lm", col="red")
+
+```
+
 # Categorical Variable Re-encoding
 ```{r}
 
