@@ -1,0 +1,49 @@
+---
+title: "Dashboard Development"
+author: "B. D. Schedin"
+date: "10/6/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+projRoot <- "C:/_git_/student-performance-analysis/"
+
+library(tidyverse)
+
+```
+
+# Loading Data
+```{r}
+
+# Loading data from EDA preprocessing
+full <- read.csv(paste0(projRoot, "data/processed/full.csv"))
+
+```
+
+
+# Regression: Predicting Grades
+```{r}
+
+# Filtering numeric variables
+filtered <- full %>%
+  select("age", "Medu", "Fedu", "traveltime", "studytime", "failures", "famrel", "freetime", "goout", "Dalc", "Walc", "health", "absences", "G1", "G2", "G3", "gMean")
+
+# Defining variables
+explVar <- "age"
+respVar <- "gMean"
+
+# Fitting the model
+lm <- lm(eval(parse(text=explVar)) ~ eval(parse(text=respVar)), data=filtered)
+summary(lm)
+
+# Plotting the model
+ggplot(filtered, aes_string(x=explVar, y=respVar)) +
+  geom_point() +
+  stat_smooth(method="lm", col="red") +
+  theme_bw() +
+  labs(title="Regression Model")
+
+```

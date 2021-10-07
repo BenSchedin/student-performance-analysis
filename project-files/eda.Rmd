@@ -253,30 +253,6 @@ cat("Test accuracy: ", accuracyDiag(testPred), "%\n", sep="")
 
 ```
 
-# Test Regression
-```{r}
-
-# Filtering numeric variables
-filtered <- full %>%
-  select("age", "Medu", "Fedu", "traveltime", "studytime", "failures", "famrel", "freetime", "goout", "Dalc", "Walc", "health", "absences", "G1", "G2", "G3", "gMean")
-
-# Defining variables
-explVar <- "age"
-respVar <- "gMean"
-
-# Fitting the model
-lm <- lm(eval(parse(text=explVar)) ~ eval(parse(text=respVar)), data=filtered)
-summary(lm)
-
-# Plotting the model
-ggplot(filtered, aes_string(x=explVar, y=respVar)) +
-  geom_point() +
-  stat_smooth(method="lm", col="red") +
-  theme_bw() +
-  labs(title="Regression Model")
-
-```
-
 # Categorical Variable Re-encoding
 ```{r}
 
@@ -298,6 +274,12 @@ ggplot(filtered, aes_string(x=explVar, y=respVar)) +
 
 ```
 
+# Multinomial Logistic Regression
+```{r}
+
+# TODO: Implement
+
+```
 
 
 
