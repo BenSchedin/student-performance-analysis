@@ -92,5 +92,36 @@ shinyServer(function(input, output) {
             labs(title="Free Time", x="Hours Spent", y="Count")
         
     })
+    
+    # Grades - Regression Model
+    output$gradesRegression <- renderPlot({
+        
+        threshold <- input$perfThresh
+        period <- input$periodSel
+        
+        table <- full %>%
+            select(everything()) %>%
+            filter((!!sym(period)) <= threshold) %>%
+            as_tibble()
+        
+        # Filtering numeric variables
+        filtered <- table %>%
+            select("age", "Medu", "Fedu", "traveltime", "studytime", "failures", "famrel", "freetime", "goout", "Dalc", "Walc", "health", "absences", "G1", "G2", "G3", "gMean")
+        
+        # Defining variables
+        explVar <- input$expVarSel
+        respVar <- input$periodSel
+        
+        # Fitting the model
+        lm <- lm(eval(parse(text=explVar)) ~ eval(parse(text=respVar)), data=filtered)
+        
+        # Plotting the model
+        ggplot(filtered, aes_string(x=explVar, y=respVar)) +
+            geom_point() +
+            stat_smooth(method="lm", col="red") +
+            theme_bw() +
+            labs(title="Regression Model")
+        
+    })
 
 })

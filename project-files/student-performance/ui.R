@@ -60,7 +60,7 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                                                                 c("Age" = "age",
                                                                   "Mother's Education Level" = "Medu",
                                                                   "Father's Education Level" = "Fedu",
-                                                                  "Travel Time" = "traveltime",
+                                                                  "School Commute Time" = "traveltime",
                                                                   "Study Time" = "studytime",
                                                                   "Course Failures" = "failures",
                                                                   "Family Relationship Quality" = "famrel",
@@ -73,7 +73,8 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                                                    
                                                    width=2),
                                       
-                                      mainPanel(fluidRow(column(plotOutput("gradeDensity"), width=12))),
+                                      mainPanel(fluidRow(column(plotOutput("gradeDensity"), width=12)),
+                                                fluidRow(column(plotOutput("gradesRegression"), width=12))),
                                 
                                       
                                       fluidRow(column(DT::dataTableOutput("belowThreshTable"), width=12))
