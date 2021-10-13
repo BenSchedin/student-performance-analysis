@@ -90,7 +90,8 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                                                    
                                                    width=2),
                                       
-                                      mainPanel(fluidRow(column(plotOutput("gradesRegression"), width=12)))
+                                      mainPanel(fluidRow(column(plotOutput("gradesCorrPlot"), width=12)),
+                                                fluidRow(column(plotOutput("gradesRegression"), width=12)))
                                       
                                       ),
                       

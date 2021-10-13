@@ -93,24 +93,16 @@ shinyServer(function(input, output) {
         
     })
     
-    # Grades - Regression Model
+    # Grades Predictors - Regression Model
     output$gradesRegression <- renderPlot({
         
-        threshold <- input$perfThresh
-        period <- input$respVarSel
-        
-        table <- full %>%
-            select(everything()) %>%
-            filter((!!sym(period)) <= threshold) %>%
-            as_tibble()
-        
         # Filtering numeric variables
-        filtered <- table %>%
+        filtered <- full %>%
             select("age", "Medu", "Fedu", "traveltime", "studytime", "failures", "famrel", "freetime", "goout", "Dalc", "Walc", "health", "absences", "G1", "G2", "G3", "gMean")
         
-        # Defining variables
+        # Defining plot variables
         explVar <- input$expVarSel
-        respVar <- input$periodSel
+        respVar <- input$respVarSel
         
         # Fitting the model
         lm <- lm(eval(parse(text=explVar)) ~ eval(parse(text=respVar)), data=filtered)
@@ -121,6 +113,23 @@ shinyServer(function(input, output) {
             stat_smooth(method="lm", col="red") +
             theme_bw() +
             labs(title="Regression Model")
+        
+    })
+    
+    # Grade Predictors - Correlation Table
+    output$gradesCorrPlot <- renderPlot({
+        
+        # Filtering on numeric data
+        fullNum <- full %>%
+            select(where(is.numeric))
+        
+        # Computing correlations between variables
+        varCor <- cor(fullNum)
+        
+        # Plotting correlation table
+        ggcorrplot(varCor) + 
+            theme(axis.text.x = element_text(size=11, angle=90, hjust=0.99, vjust=0.3), axis.text.y=element_text(size=11)) + 
+            labs(title = "Variable Correlations", x="Variable 1", y="Variable 2")
         
     })
 
