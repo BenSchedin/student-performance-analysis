@@ -97,7 +97,7 @@ shinyServer(function(input, output) {
     output$gradesRegression <- renderPlot({
         
         threshold <- input$perfThresh
-        period <- input$periodSel
+        period <- input$respVarSel
         
         table <- full %>%
             select(everything()) %>%

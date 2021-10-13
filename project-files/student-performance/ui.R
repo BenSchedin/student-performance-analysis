@@ -55,6 +55,23 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                                                                   "Third" = "G3",
                                                                   "Average" = "gMean")),
                                                    
+                                                   width=2),
+                                      
+                                      mainPanel(fluidRow(column(plotOutput("gradeDensity"), width=12))),
+                                
+                                      
+                                      fluidRow(column(DT::dataTableOutput("belowThreshTable"), width=12)),
+                                      ),
+                             
+                             # Main Tab: Performance Predictors
+                             tabPanel("Grade Predictors",
+                                      sidebarPanel(radioButtons("respVarSel",
+                                                                "Response Variables",
+                                                                c("First Period" = "G1",
+                                                                  "Second Period" = "G2",
+                                                                  "Third Period" = "G3",
+                                                                  "Average" = "gMean")),
+                                                   
                                                    radioButtons("expVarSel",
                                                                 "Explanatory Variables",
                                                                 c("Age" = "age",
@@ -73,13 +90,11 @@ shinyUI(fluidPage(theme=shinytheme("yeti"),
                                                    
                                                    width=2),
                                       
-                                      mainPanel(fluidRow(column(plotOutput("gradeDensity"), width=12)),
-                                                fluidRow(column(plotOutput("gradesRegression"), width=12))),
-                                
+                                      mainPanel(fluidRow(column(plotOutput("gradesRegression"), width=12)))
                                       
-                                      fluidRow(column(DT::dataTableOutput("belowThreshTable"), width=12))
                                       ),
-                             
+                      
+     
                              # Main Tab: Habits
                              tabPanel("Behavior",
                                       fluidRow(column(plotOutput("failures"), width=4), column(plotOutput("studyTime"), width=4), column(plotOutput("freeTime"), width=4)),
