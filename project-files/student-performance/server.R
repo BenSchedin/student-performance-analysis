@@ -5,8 +5,9 @@
 library(shiny)
 library(tidyverse)
 library(rlang)
+library(ggcorrplot)
 
-data <- read.csv("www/full.csv")
+full <- read.csv("www/full.csv")
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {

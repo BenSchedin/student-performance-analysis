@@ -13,7 +13,7 @@ library(shiny)
 library(shinythemes)
 library(DT)
 
-data <- read.csv("www/full.csv")
+full <- read.csv("www/full.csv")
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(theme=shinytheme("yeti"),
