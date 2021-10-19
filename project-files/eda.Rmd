@@ -42,6 +42,10 @@ full$gMean <- rowMeans(full[, 31:33])
 # Exporting merged data to .csv
 write.csv(full, paste0(projRoot, "data/processed/full.csv"), row.names=FALSE)
 
+# Filtering on numeric data for prototype numeric analyses (not re-encoded)
+fullNum <- full %>%
+  select(where(is.numeric))
+
 ```
 
 # Demographics
@@ -73,11 +77,10 @@ ggplot(temp, aes(fill=sex, x=failures, y=n)) +
 # Absences
 temp <- full %>% count(absences, sex)
 
-ggplot(temp, aes(fill=sex, x=absences, y=n)) +
-  geom_bar(position="stack", stat="identity") +
-  scale_x_continuous(breaks=round(seq(min(temp$absences), max(temp$absences), by=1))) +
+ggplot(data=temp, aes(x=absences, y=n, group=sex)) +
+  geom_smooth(aes(color=sex), se=FALSE) +
   theme_bw() +
-  labs(title="Absences", x="Number of Absences", y="Count")
+  labs(title="Absences", x="Number of Absences", y="Number of Students")
 
 # Study time
 temp <- full %>% count(studytime, sex)
@@ -172,37 +175,8 @@ A large tail appears near 0 as the day goes on.
 Distributions narrow to the mean as the day goes on.
 GP outperforms MS across the board.
 
-# Grades by Gender
-```{r}
-
-# Gender proportions
-full %>%
-  select(sex, gMean) %>%
-    ggplot(aes(x="", y=gMean, fill=sex)) +
-    geom_col() +
-    coord_polar(theta = "y") +
-    scale_fill_brewer() +
-    theme_void() +
-    labs(title="Gender Proportion", x="", y="")
-# TODO: add wedge labels
-
-# Plots for student grades by gender (both schools)
-full %>% 
-  select(sex, gMean) %>% 
-    ggplot(aes(x=gMean, fill=sex)) +
-    geom_density(alpha=0.25) +
-    theme_bw() +
-    labs(title="Grades by Gender", x="Score", y="Density")
-
-```
-
-
 # Performance Correlations
 ```{r}
-
-# Filtering on numeric data
-fullNum <- full %>%
-  select(where(is.numeric))
 
 # Computing correlations between variables
 varCor <- cor(fullNum)
