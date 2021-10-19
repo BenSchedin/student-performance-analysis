@@ -16,6 +16,7 @@ projRoot <- "C:/_git_/student-performance-analysis/"
 library(tidyverse)
 library(ggcorrplot)
 library(randomForest)
+library(factoextra)
 
 source(paste0(projRoot, "functions/diag-accuracy.R"))
 
@@ -45,6 +46,13 @@ write.csv(full, paste0(projRoot, "data/processed/full.csv"), row.names=FALSE)
 # Filtering on numeric data for prototype numeric analyses (not re-encoded)
 fullNum <- full %>%
   select(where(is.numeric))
+
+```
+
+# Categorical Variable Re-encoding
+```{r}
+
+
 
 ```
 
@@ -165,10 +173,6 @@ g3BelowScore <- full %>%
   as_tibble()
 g3BelowScore
 
-# TODO: in dashboard, provide check boxes to show/hide columns
-# TODO: dig deeper into why students are scoring lower during later periods (hypothesis tests?)
-# TODO: look at top performers for clues about performance factors
-
 ```
 
 A large tail appears near 0 as the day goes on.
@@ -186,8 +190,37 @@ ggcorrplot(varCor) +
   theme(axis.text.x = element_text(size=11, angle=90, hjust=0.99, vjust=0.3), axis.text.y=element_text(size=11)) + 
   labs(title = "Variable Correlations", x="Variable 1", y="Variable 2")
 
-# TODO: are all numeric variables continuous, or are they really factors encoded as numbers?
-# TODO: good way to do correlations between factors/non-numeric?
+```
+
+# Clustering
+```{r}
+
+# Setting chunk seed
+set.seed(123)
+
+# Scaling numeric data
+scaledNum <- scale(fullNum, center=TRUE, scale=TRUE)
+
+# Running k-Means, k=5
+kMeans <- kmeans(scaledNum, centers=5, nstart=100)
+
+# Attaching cluster labels to samples
+kmDF <- data.frame(Cluster = kMeans$cluster, fullNum)
+
+# Visualizing clusters
+fviz_cluster(kMeans, data=scale(scaledNum), geom=c("point"), ellipse.type="euclid", main="k-Means, k=5, Cluster Plot")
+
+# Summarizing grade performance by cluster
+perfClust <- kmDF %>%
+  group_by(Cluster) %>%
+  summarise(gMean=mean(gMean))
+
+perfClust$Cluster <- as.factor(perfClust$Cluster)
+
+# Plotting performance by cluster
+ggplot(data=perfClust, aes(x=Cluster, y=gMean, fill=Cluster)) +
+  geom_bar(stat="identity") +
+  labs(title="Performance by Cluster", x="Cluster", y="Average Grade")
 
 ```
 
@@ -227,31 +260,17 @@ cat("Test accuracy: ", accuracyDiag(testPred), "%\n", sep="")
 
 ```
 
-# Categorical Variable Re-encoding
+# Idea: Stepwise Regression
 ```{r}
 
-# TODO: Implement
+
 
 ```
 
-# Stepwise Regression
+# Idea: Multinomial Logistic Regression
 ```{r}
 
-# TODO: Implement
 
-```
-
-# Clustering
-```{r}
-
-# TODO: Implement
-
-```
-
-# Multinomial Logistic Regression
-```{r}
-
-# TODO: Implement
 
 ```
 
